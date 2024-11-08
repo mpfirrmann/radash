@@ -1,0 +1,46 @@
+name: 'Generate and Publish Documentation'
+on:
+    workflow_call:
+    workflow_dispatch:
+    push:
+        branches:
+            - master
+
+permissions:
+    id-token: write
+    contents: read
+    packages: read
+    pages: write
+
+concurrency:
+    group: 'pages'
+    cancel-in-progress: false
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+                  token: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Install dependencies
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: yarn install --immutable
+
+            - name: Generate documentation
+              run: yarn typedoc
+
+            - name: Setup Pages
+              uses: actions/configure-pages@v5
+
+            - name: Upload artifact
+              uses: actions/upload-pages-artifact@v3
+              with:
+                  path: './docs/typedoc'
+
+            - name: Deploy to GitHub Pages
+              id: deployment
+              uses: actions/deploy-pages@v4
