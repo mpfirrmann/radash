@@ -1,0 +1,166 @@
+[
+  {
+    "line": 15,
+    "text": "export function zip<T1, T2, T3, T4, T5>(\n  array1: T1[],\n  array2: T2[],\n  array3: T3[],\n  array4: T4[],\n  array5: T5[]\n): [T1, T2, T3, T4, T5][]"
+  },
+  {
+    "line": 22,
+    "text": "export function zip<T1, T2, T3, T4>(\n  array1: T1[],\n  array2: T2[],\n  array3: T3[],\n  array4: T4[]\n): [T1, T2, T3, T4][]"
+  },
+  {
+    "line": 28,
+    "text": "export function zip<T1, T2, T3>(\n  array1: T1[],\n  array2: T2[],\n  array3: T3[]\n): [T1, T2, T3][]"
+  },
+  {
+    "line": 33,
+    "text": "export function zip<T1, T2>(array1: T1[], array2: T2[]): [T1, T2][]"
+  },
+  {
+    "line": 34,
+    "text": "export function zip<T>(...arrays: T[][]): T[][] {\n  if (!arrays || !arrays.length) return []\n  return new Array(Math.max(...arrays.map(({ length }) => length)))\n    .fill([])\n    .map((_, idx) => arrays.map(array => array[idx]))\n}"
+  },
+  {
+    "line": 41,
+    "text": "export function zipToObject<K extends string | number | symbol, V>(\n  keys: K[],\n  values: V | ((key: K, idx: number) => V) | V[]\n): Record<K, V> {\n  if (!keys || !keys.length) {\n    return {} as Record<K, V>\n  }\n\n  const getValue = isFunction(values)\n    ? values\n    : isArray(values)\n    ? (_k: K, i: number) => values[i]\n    : (_k: K, _i: number) => values\n\n  return keys.reduce((acc, key, idx) => {\n    acc[key] = getValue(key, idx)\n    return acc\n  }, {} as Record<K, V>)\n}"
+  },
+  {
+    "line": 69,
+    "text": "export function sum<T extends number>(array: readonly T[]): number"
+  },
+  {
+    "line": 70,
+    "text": "export function sum<T extends object>(\n  array: readonly T[],\n  fn: (item: T) => number\n): number"
+  },
+  {
+    "line": 74,
+    "text": "export function sum<T extends object | number>(\n  array: readonly any[],\n  fn?: (item: T) => number\n): number {\n  return (array || []).reduce((acc, item) => acc + (fn ? fn(item) : item), 0)\n}"
+  },
+  {
+    "line": 173,
+    "text": "export function max(array: readonly [number, ...number[]]): number"
+  },
+  {
+    "line": 174,
+    "text": "export function max(array: readonly number[]): number | null"
+  },
+  {
+    "line": 175,
+    "text": "export function max<T>(\n  array: readonly T[],\n  getter: (item: T) => number\n): T | null"
+  },
+  {
+    "line": 179,
+    "text": "export function max<T>(\n  array: readonly T[],\n  getter?: (item: T) => number\n): T | null {\n  const get = getter ?? ((v: any) => v)\n  return boil(array, (a, b) => (get(a) > get(b) ? a : b))\n}"
+  },
+  {
+    "line": 187,
+    "text": "export function min(array: readonly [number, ...number[]]): number"
+  },
+  {
+    "line": 188,
+    "text": "export function min(array: readonly number[]): number | null"
+  },
+  {
+    "line": 189,
+    "text": "export function min<T>(\n  array: readonly T[],\n  getter: (item: T) => number\n): T | null"
+  },
+  {
+    "line": 193,
+    "text": "export function min<T>(\n  array: readonly T[],\n  getter?: (item: T) => number\n): T | null {\n  const get = getter ?? ((v: any) => v)\n  return boil(array, (a, b) => (get(a) < get(b) ? a : b))\n}"
+  },
+  {
+    "line": 221,
+    "text": "export function* range<T = number>(\n  startOrLength: number,\n  end?: number,\n  valueOrMapper: T | ((i: number) => T) = i => i as T,\n  step: number = 1\n): Generator<T> {\n  const mapper = isFunction(valueOrMapper) ? valueOrMapper : () => valueOrMapper\n  const start = end ? startOrLength : 0\n  const final = end ?? startOrLength\n  for (let i = start; i <= final; i += step) {\n    yield mapper(i)\n    if (i + step > final) break\n  }\n}"
+  },
+  {
+    "line": 377,
+    "text": "export function shift<T>(arr: Array<T>, n: number) {\n  if (arr.length === 0) return arr\n\n  const shiftNumber = n % arr.length\n\n  if (shiftNumber === 0) return arr\n\n  return [...arr.slice(-shiftNumber, arr.length), ...arr.slice(0, -shiftNumber)]\n}"
+  },
+  {
+    "line": 3,
+    "text": "group = <T, Key extends string | number | symbol>(\n  array: readonly T[],\n  getGroupId: (item: T) => Key\n): Partial<Record<Key, T[]>> => {\n  return array.reduce((acc, item) => {\n    const groupId = getGroupId(item)\n    if (!acc[groupId]) acc[groupId] = []\n    acc[groupId].push(item)\n    return acc\n  }, {} as Record<Key, T[]>)\n}"
+  },
+  {
+    "line": 61,
+    "text": "boil = <T>(\n  array: readonly T[],\n  compareFunc: (a: T, b: T) => T\n) => {\n  if (!array || (array.length ?? 0) === 0) return null\n  return array.reduce(compareFunc)\n}"
+  },
+  {
+    "line": 81,
+    "text": "first = <T>(\n  array: readonly T[],\n  defaultValue: T | null | undefined = undefined\n) => {\n  return array?.length > 0 ? array[0] : defaultValue\n}"
+  },
+  {
+    "line": 88,
+    "text": "last = <T>(\n  array: readonly T[],\n  defaultValue: T | null | undefined = undefined\n) => {\n  return array?.length > 0 ? array[array.length - 1] : defaultValue\n}"
+  },
+  {
+    "line": 95,
+    "text": "sort = <T>(\n  array: readonly T[],\n  getter: (item: T) => number,\n  desc = false\n) => {\n  if (!array) return []\n  const asc = (a: T, b: T) => getter(a) - getter(b)\n  const dsc = (a: T, b: T) => getter(b) - getter(a)\n  return array.slice().sort(desc === true ? dsc : asc)\n}"
+  },
+  {
+    "line": 106,
+    "text": "alphabetical = <T>(\n  array: readonly T[],\n  getter: (item: T) => string,\n  dir: 'asc' | 'desc' = 'asc'\n) => {\n  if (!array) return []\n  const asc = (a: T, b: T) => `${getter(a)}`.localeCompare(getter(b))\n  const dsc = (a: T, b: T) => `${getter(b)}`.localeCompare(getter(a))\n  return array.slice().sort(dir === 'desc' ? dsc : asc)\n}"
+  },
+  {
+    "line": 117,
+    "text": "counting = <T, TId extends string | number | symbol>(\n  list: readonly T[],\n  identity: (item: T) => TId\n): Record<TId, number> => {\n  if (!list) return {} as Record<TId, number>\n  return list.reduce((acc, item) => {\n    const id = identity(item)\n    acc[id] = (acc[id] ?? 0) + 1\n    return acc\n  }, {} as Record<TId, number>)\n}"
+  },
+  {
+    "line": 129,
+    "text": "replace = <T>(\n  list: readonly T[],\n  newItem: T,\n  match: (item: T, idx: number) => boolean\n): T[] => {\n  if (!list) return []\n  if (newItem === undefined) return [...list]\n  for (let idx = 0; idx < list.length; idx++) {\n    const item = list[idx]\n    if (match(item, idx)) {\n      return [\n        ...list.slice(0, idx),\n        newItem,\n        ...list.slice(idx + 1, list.length)\n      ]\n    }\n  }\n  return [...list]\n}"
+  },
+  {
+    "line": 149,
+    "text": "objectify = <T, Key extends string | number | symbol, Value = T>(\n  array: readonly T[],\n  getKey: (item: T) => Key,\n  getValue: (item: T) => Value = item => item as unknown as Value\n): Record<Key, Value> => {\n  return array.reduce((acc, item) => {\n    acc[getKey(item)] = getValue(item)\n    return acc\n  }, {} as Record<Key, Value>)\n}"
+  },
+  {
+    "line": 160,
+    "text": "select = <T, K>(\n  array: readonly T[],\n  mapper: (item: T, index: number) => K,\n  condition: (item: T, index: number) => boolean\n) => {\n  if (!array) return []\n  return array.reduce((acc, item, index) => {\n    if (!condition(item, index)) return acc\n    acc.push(mapper(item, index))\n    return acc\n  }, [] as K[])\n}"
+  },
+  {
+    "line": 201,
+    "text": "cluster = <T>(list: readonly T[], size: number = 2): T[][] => {\n  const clusterCount = Math.ceil(list.length / size)\n  return new Array(clusterCount).fill(null).map((_c: null, i: number) => {\n    return list.slice(i * size, i * size + size)\n  })\n}"
+  },
+  {
+    "line": 208,
+    "text": "unique = <T, K extends string | number | symbol>(\n  array: readonly T[],\n  toKey?: (item: T) => K\n): T[] => {\n  const valueMap = array.reduce((acc, item) => {\n    const key = toKey ? toKey(item) : (item as any as string | number | symbol)\n    if (acc[key]) return acc\n    acc[key] = item\n    return acc\n  }, {} as Record<string | number | symbol, T>)\n  return Object.values(valueMap)\n}"
+  },
+  {
+    "line": 236,
+    "text": "list = <T = number>(\n  startOrLength: number,\n  end?: number,\n  valueOrMapper?: T | ((i: number) => T),\n  step?: number\n): T[] => {\n  return Array.from(range(startOrLength, end, valueOrMapper, step))\n}"
+  },
+  {
+    "line": 245,
+    "text": "flat = <T>(lists: readonly T[][]): T[] => {\n  return lists.reduce((acc, list) => {\n    acc.push(...list)\n    return acc\n  }, [])\n}"
+  },
+  {
+    "line": 252,
+    "text": "intersects = <T, K extends string | number | symbol>(\n  listA: readonly T[],\n  listB: readonly T[],\n  identity?: (t: T) => K\n): boolean => {\n  if (!listA || !listB) return false\n  const ident = identity ?? ((x: T) => x as unknown as K)\n  const dictB = listB.reduce((acc, item) => {\n    acc[ident(item)] = true\n    return acc\n  }, {} as Record<string | number | symbol, boolean>)\n  return listA.some(value => dictB[ident(value)])\n}"
+  },
+  {
+    "line": 266,
+    "text": "fork = <T>(\n  list: readonly T[],\n  condition: (item: T) => boolean\n): [T[], T[]] => {\n  if (!list) return [[], []]\n  return list.reduce(\n    (acc, item) => {\n      const [a, b] = acc\n      if (condition(item)) {\n        return [[...a, item], b]\n      } else {\n        return [a, [...b, item]]\n      }\n    },\n    [[], []] as [T[], T[]]\n  )\n}"
+  },
+  {
+    "line": 284,
+    "text": "merge = <T>(\n  root: readonly T[],\n  others: readonly T[],\n  matcher: (item: T) => any\n) => {\n  if (!others && !root) return []\n  if (!others) return root\n  if (!root) return []\n  if (!matcher) return root\n  return root.reduce((acc, r) => {\n    const matched = others.find(o => matcher(r) === matcher(o))\n    if (matched) acc.push(matched)\n    else acc.push(r)\n    return acc\n  }, [] as T[])\n}"
+  },
+  {
+    "line": 301,
+    "text": "replaceOrAppend = <T>(\n  list: readonly T[],\n  newItem: T,\n  match: (a: T, idx: number) => boolean\n) => {\n  if (!list && !newItem) return []\n  if (!newItem) return [...list]\n  if (!list) return [newItem]\n  for (let idx = 0; idx < list.length; idx++) {\n    const item = list[idx]\n    if (match(item, idx)) {\n      return [\n        ...list.slice(0, idx),\n        newItem,\n        ...list.slice(idx + 1, list.length)\n      ]\n    }\n  }\n  return [...list, newItem]\n}"
+  },
+  {
+    "line": 322,
+    "text": "toggle = <T>(\n  list: readonly T[],\n  item: T,\n  toKey?: null | ((item: T, idx: number) => number | string | symbol),\n  options?: {\n    strategy?: 'prepend' | 'append'\n  }\n) => {\n  if (!list && !item) return []\n  if (!list) return [item]\n  if (!item) return [...list]\n  const matcher = toKey\n    ? (x: T, idx: number) => toKey(x, idx) === toKey(item, idx)\n    : (x: T) => x === item\n  const existing = list.find(matcher)\n  if (existing) return list.filter((x, idx) => !matcher(x, idx))\n  const strategy = options?.strategy ?? 'append'\n  if (strategy === 'append') return [...list, item]\n  return [item, ...list]\n}"
+  },
+  {
+    "line": 345,
+    "text": "sift = <T>(list: readonly (T | Falsy)[]): T[] => {\n  return (list?.filter(x => !!x) as T[]) ?? []\n}"
+  },
+  {
+    "line": 349,
+    "text": "iterate = <T>(\n  count: number,\n  func: (currentValue: T, iteration: number) => T,\n  initValue: T\n) => {\n  let value = initValue\n  for (let i = 1; i <= count; i++) {\n    value = func(value, i)\n  }\n  return value\n}"
+  },
+  {
+    "line": 361,
+    "text": "diff = <T>(\n  root: readonly T[],\n  other: readonly T[],\n  identity: (item: T) => string | number | symbol = (t: T) =>\n    t as unknown as string | number | symbol\n): T[] => {\n  if (!root?.length && !other?.length) return []\n  if (root?.length === undefined) return [...other]\n  if (!other?.length) return [...root]\n  const bKeys = other.reduce((acc, item) => {\n    acc[identity(item)] = true\n    return acc\n  }, {} as Record<string | number | symbol, boolean>)\n  return root.filter(a => !bKeys[identity(a)])\n}"
+  }
+]

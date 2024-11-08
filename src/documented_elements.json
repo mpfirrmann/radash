@@ -1,0 +1,207 @@
+[
+    {
+        "line": 15,
+        "text": "export function zip<T1, T2, T3, T4, T5>(\n  array1: T1[],\n  array2: T2[],\n  array3: T3[],\n  array4: T4[],\n  array5: T5[]\n): [T1, T2, T3, T4, T5][]",
+        "jsdoc": "/**\n   * Zips five input arrays into an array of 5-tuples. Each tuple contains elements from the corresponding index of the input arrays.\n   *\n   * @param array1 The first input array.\n   * @param array2 The second input array.\n   * @param array3 The third input array.\n   * @param array4 The fourth input array.\n   * @param array5 The fifth input array.\n   * @returns An array of 5-tuples, where each tuple contains elements from the corresponding index of the input arrays.\n   */"
+    },
+    {
+        "line": 22,
+        "text": "export function zip<T1, T2, T3, T4>(\n  array1: T1[],\n  array2: T2[],\n  array3: T3[],\n  array4: T4[]\n): [T1, T2, T3, T4][]",
+        "jsdoc": "```typescript\n/**\n * Zips four input arrays into an array of tuples, where each tuple contains an element from each input array.\n *\n * @param array1 - The first input array.\n * @param array2 - The second input array.\n * @param array3 - The third input array.\n * @param array4 - The fourth input array.\n * @returns An array of tuples, where each tuple contains an element from each input array.\n *\n * @example\n * ```\n * const array1 = [1, 2, 3];\n * const array2 = ['a', 'b', 'c'];\n * const array3 = [true, false, true];\n * const array4 = [{}, {}, {}];\n *\n * const result = zip(array1, array2, array3, array4);\n * // result: [ [1, 'a', true, {}], [2, 'b', false, {}], [3, 'c', true, {}] ]\n * ```\n */\n ```"
+    },
+    {
+        "line": 28,
+        "text": "export function zip<T1, T2, T3>(\n  array1: T1[],\n  array2: T2[],\n  array3: T3[]\n): [T1, T2, T3][]",
+        "jsdoc": "```typescript\n/**\n * Zips three arrays into an array of tuples, where the i-th tuple contains the i-th element from each of the three input arrays.\n *\n * @param array1 An array of elements of type T1.\n * @param array2 An array of elements of type T2.\n * @param array3 An array of elements of type T3.\n * @returns An array of tuples, where each tuple contains an element from each of the input arrays.\n */\n```"
+    },
+    {
+        "line": 33,
+        "text": "export function zip<T1, T2>(array1: T1[], array2: T2[]): [T1, T2][]",
+        "jsdoc": "```typescript\n/**\n * Zips two arrays into an array of pairs.\n *\n * @param array1 The first array.\n * @param array2 The second array.\n * @returns An array of pairs, where the i-th pair contains the i-th element from each input array.\n *\n * @example\n * ```\n * const array1 = [1, 2, 3];\n * const array2 = ['a', 'b', 'c'];\n * const result = zip(array1, array2); // [[1, 'a'], [2, 'b'], [3, 'c']]\n * ```\n */\n ```"
+    },
+    {
+        "line": 34,
+        "text": "export function zip<T>(...arrays: T[][]): T[][] {\n  if (!arrays || !arrays.length) return []\n  return new Array(Math.max(...arrays.map(({ length }) => length)))\n    .fill([])\n    .map((_, idx) => arrays.map(array => array[idx]))\n}",
+        "jsdoc": "```typescript\n/**\n * Zips multiple arrays together by creating a 2D array where the i-th subarray contains the i-th element from each of the input arrays.\n * If an input array is shorter than the others, its remaining elements are treated as `undefined`.\n *\n * @param arrays - The arrays to zip together.\n * @returns A 2D array where the i-th subarray contains the i-th element from each of the input arrays.\n *\n * @example\n * ```\n * const result = zip([1, 2, 3], ['a', 'b', 'c']);\n * console.log(result); // [[1, 'a'], [2, 'b'], [3, 'c']]\n * ```\n */\n```"
+    },
+    {
+        "line": 41,
+        "text": "export function zipToObject<K extends string | number | symbol, V>(\n  keys: K[],\n  values: V | ((key: K, idx: number) => V) | V[]\n): Record<K, V> {\n  if (!keys || !keys.length) {\n    return {} as Record<K, V>\n  }\n\n  const getValue = isFunction(values)\n    ? values\n    : isArray(values)\n    ? (_k: K, i: number) => values[i]\n    : (_k: K, _i: number) => values\n\n  return keys.reduce((acc, key, idx) => {\n    acc[key] = getValue(key, idx)\n    return acc\n  }, {} as Record<K, V>)\n}",
+        "jsdoc": "```typescript\n/**\n * Zips an array of keys with an array of values or a single value (or a function that returns a value) to create an object.\n *\n * @template K The type of the keys, which can be a string, number, or symbol.\n * @template V The type of the values.\n *\n * @param {K[]} keys - An array of keys to use for the object.\n * @param {V | ((key: K, idx: number) => V) | V[]} values - An array of values, a single value, or a function that returns a value.\n * If an array, it must have the same length as the keys array. If a function, it will be called with each key and its index.\n *\n * @returns {Record<K, V>} An object with the keys and values zipped together.\n * If the keys array is empty, an empty object will be returned.\n */\n```"
+    },
+    {
+        "line": 69,
+        "text": "export function sum<T extends number>(array: readonly T[]): number",
+        "jsdoc": "```typescript\n/**\n * Calculates the sum of an array of numbers.\n * @param array An array of numbers.\n * @returns The sum of the numbers in the array.\n * @template T The type of the numbers in the array, which must extend the number type.\n */\n```"
+    },
+    {
+        "line": 70,
+        "text": "export function sum<T extends object>(\n  array: readonly T[],\n  fn: (item: T) => number\n): number",
+        "jsdoc": "```typescript\n/**\n * Calculates the sum of the values returned by the provided function for each item in the input array.\n * @param array An array of objects to calculate the sum for.\n * @param fn A function that takes an object from the array and returns a number.\n * @returns The sum of the numbers returned by the function for each item in the array.\n */\n```"
+    },
+    {
+        "line": 74,
+        "text": "export function sum<T extends object | number>(\n  array: readonly any[],\n  fn?: (item: T) => number\n): number {\n  return (array || []).reduce((acc, item) => acc + (fn ? fn(item) : item), 0)\n}",
+        "jsdoc": "```typescript\n/**\n * Sums up the elements in the given array. If a function is provided, it will be used to map each element to a number before summing.\n * @param array The array to sum.\n * @param fn An optional function to map each element to a number before summing.\n * @returns The sum of the elements in the array.\n * @template T The type of the elements in the array. Must extend object or number.\n */\n```"
+    },
+    {
+        "line": 173,
+        "text": "export function max(array: readonly [number, ...number[]]): number",
+        "jsdoc": "```typescript\n/**\n * Returns the maximum value from the given array of numbers.\n * @param array An array of numbers.\n * @returns The maximum number in the array.\n */\n```"
+    },
+    {
+        "line": 174,
+        "text": "export function max(array: readonly number[]): number | null",
+        "jsdoc": "```typescript\n/**\n * Returns the maximum value in the given array of numbers, or null if the array is empty.\n * @param array An array of numbers.\n * @returns The maximum value in the array, or null if the array is empty.\n */\n```"
+    },
+    {
+        "line": 175,
+        "text": "export function max<T>(\n  array: readonly T[],\n  getter: (item: T) => number\n): T | null",
+        "jsdoc": "```typescript\n/**\n * Returns the item from the given array that has the maximum value as determined by the provided getter function.\n * If the array is empty, it returns null.\n *\n * @typeparam T - The type of the items in the array.\n * @param array - The array of items to search.\n * @param getter - A function that takes an item and returns a number, used to determine the maximum value.\n * @returns The item with the maximum value, or null if the array is empty.\n */\n```"
+    },
+    {
+        "line": 179,
+        "text": "export function max<T>(\n  array: readonly T[],\n  getter?: (item: T) => number\n): T | null {\n  const get = getter ?? ((v: any) => v)\n  return boil(array, (a, b) => (get(a) > get(b) ? a : b))\n}",
+        "jsdoc": "```typescript\n/**\n * Returns the maximum value in the given array based on the provided getter function.\n * If no getter function is provided, it defaults to comparing the items directly.\n * If the array is empty, it returns null.\n *\n * @param array - The array to find the maximum value in.\n * @param getter - An optional function to extract a numeric value from each item in the array.\n * @returns The maximum value in the array, or null if the array is empty.\n */\n```"
+    },
+    {
+        "line": 187,
+        "text": "export function min(array: readonly [number, ...number[]]): number",
+        "jsdoc": "```typescript\n/**\n * Returns the smallest number in the given array.\n * @param array An array of numbers.\n * @returns The smallest number in the array.\n */\n```"
+    },
+    {
+        "line": 188,
+        "text": "export function min(array: readonly number[]): number | null",
+        "jsdoc": "```typescript\n/**\n * Returns the minimum value in the given array of numbers, or null if the array is empty.\n * @param array An array of numbers.\n * @returns The minimum value in the array, or null if the array is empty.\n */\n```"
+    },
+    {
+        "line": 189,
+        "text": "export function min<T>(\n  array: readonly T[],\n  getter: (item: T) => number\n): T | null",
+        "jsdoc": "```typescript\n/**\n * Returns the item from the given array with the minimum value as determined by the provided getter function.\n * If the array is empty, it returns null.\n *\n * @param array - The array to search for the minimum value.\n * @param getter - A function that takes an item from the array and returns a number.\n * @returns The item from the array with the minimum value, or null if the array is empty.\n */\n```"
+    },
+    {
+        "line": 193,
+        "text": "export function min<T>(\n  array: readonly T[],\n  getter?: (item: T) => number\n): T | null {\n  const get = getter ?? ((v: any) => v)\n  return boil(array, (a, b) => (get(a) < get(b) ? a : b))\n}",
+        "jsdoc": "```typescript\n/**\n * Returns the minimum value in the given array based on the provided getter function or the value itself if no getter is provided.\n * If the array is empty, it returns null.\n *\n * @param array - The array to search for the minimum value.\n * @param getter - An optional function that takes an item from the array and returns a number.\n *                  If not provided, the value itself is used.\n *\n * @returns The minimum value in the array based on the provided getter function, or null if the array is empty.\n */\n```"
+    },
+    {
+        "line": 221,
+        "text": "export function* range<T = number>(\n  startOrLength: number,\n  end?: number,\n  valueOrMapper: T | ((i: number) => T) = i => i as T,\n  step: number = 1\n): Generator<T> {\n  const mapper = isFunction(valueOrMapper) ? valueOrMapper : () => valueOrMapper\n  const start = end ? startOrLength : 0\n  const final = end ?? startOrLength\n  for (let i = start; i <= final; i += step) {\n    yield mapper(i)\n    if (i + step > final) break\n  }\n}",
+        "jsdoc": "```typescript\n/**\n * range - Generates a sequence of numbers or mapped values within a specified range.\n * @param startOrLength - The start of the range or the length of the range if `end` is not provided.\n * @param end - The end of the range. If not provided, `startOrLength` is used as the end.\n * @param valueOrMapper - The value to be used in the range or a mapping function to transform the range values.\n * @param step - The step value between each number in the range. Default is 1.\n * @returns A generator that yields the sequence of numbers or mapped values.\n * @template T - The type of the range values. Default is `number`.\n */\n```"
+    },
+    {
+        "line": 377,
+        "text": "export function shift<T>(arr: Array<T>, n: number) {\n  if (arr.length === 0) return arr\n\n  const shiftNumber = n % arr.length\n\n  if (shiftNumber === 0) return arr\n\n  return [...arr.slice(-shiftNumber, arr.length), ...arr.slice(0, -shiftNumber)]\n}",
+        "jsdoc": "```typescript\n/**\n * Shifts the elements of an array by a specified number of positions.\n *\n * @param arr The array to shift.\n * @param n The number of positions to shift the array. If negative, shifts to the left.\n * @returns A new array with the elements shifted. If the array is empty or the shift number is a multiple of the array length, returns the original array.\n *\n * @example\n * shift([1, 2, 3, 4, 5], 2) // returns [4, 5, 1, 2, 3]\n * shift([1, 2, 3, 4, 5], -1) // returns [2, 3, 4, 5, 1]\n */\n```"
+    },
+    {
+        "line": 3,
+        "text": "group = <T, Key extends string | number | symbol>(\n  array: readonly T[],\n  getGroupId: (item: T) => Key\n): Partial<Record<Key, T[]>> => {\n  return array.reduce((acc, item) => {\n    const groupId = getGroupId(item)\n    if (!acc[groupId]) acc[groupId] = []\n    acc[groupId].push(item)\n    return acc\n  }, {} as Record<Key, T[]>)\n}",
+        "jsdoc": "```typescript\n/**\n * Groups an array of items based on a specified group identifier.\n *\n * @typeParam T - The type of the items in the input array.\n * @typeParam Key - The type of the group identifier, which can be a string, number, or symbol.\n *\n * @param array - The input array of items to be grouped.\n * @param getGroupId - A function that takes an item and returns its group identifier.\n *\n * @returns A partial record where the keys are the group identifiers and the values are arrays of items that belong to that group.\n */\n```"
+    },
+    {
+        "line": 61,
+        "text": "boil = <T>(\n  array: readonly T[],\n  compareFunc: (a: T, b: T) => T\n) => {\n  if (!array || (array.length ?? 0) === 0) return null\n  return array.reduce(compareFunc)\n}",
+        "jsdoc": "```typescript\n/**\n * Boils down an array to a single value using a comparison function.\n * @param array The array to boil down.\n * @param compareFunc The function to compare elements in the array.\n * @returns The boiled down value, or null if the array is empty or undefined.\n */\n```"
+    },
+    {
+        "line": 81,
+        "text": "first = <T>(\n  array: readonly T[],\n  defaultValue: T | null | undefined = undefined\n) => {\n  return array?.length > 0 ? array[0] : defaultValue\n}",
+        "jsdoc": "```typescript\n/**\n * Returns the first element of an array, or a default value if the array is empty.\n * @param array The array to get the first element from.\n * @param defaultValue The value to return if the array is empty. Default is `undefined`.\n * @returns The first element of the array, or the default value if the array is empty.\n */\n```"
+    },
+    {
+        "line": 88,
+        "text": "last = <T>(\n  array: readonly T[],\n  defaultValue: T | null | undefined = undefined\n) => {\n  return array?.length > 0 ? array[array.length - 1] : defaultValue\n}",
+        "jsdoc": "```typescript\n/**\n * Returns the last element of the given array, or the provided default value if the array is empty.\n * @param array The array to get the last element from.\n * @param defaultValue The value to return if the array is empty. Defaults to `undefined`.\n * @returns The last element of the array, or the provided default value if the array is empty.\n */\n```"
+    },
+    {
+        "line": 95,
+        "text": "sort = <T>(\n  array: readonly T[],\n  getter: (item: T) => number,\n  desc = false\n) => {\n  if (!array) return []\n  const asc = (a: T, b: T) => getter(a) - getter(b)\n  const dsc = (a: T, b: T) => getter(b) - getter(a)\n  return array.slice().sort(desc === true ? dsc : asc)\n}",
+        "jsdoc": "```typescript\n/**\n * Sorts an array of elements based on a specified getter function.\n * @param array The array to be sorted.\n * @param getter A function that takes an element from the array and returns a number.\n * @param desc Optional parameter to sort in descending order. Default is false.\n * @returns A new array that is a sorted version of the input array.\n */\n```"
+    },
+    {
+        "line": 106,
+        "text": "alphabetical = <T>(\n  array: readonly T[],\n  getter: (item: T) => string,\n  dir: 'asc' | 'desc' = 'asc'\n) => {\n  if (!array) return []\n  const asc = (a: T, b: T) => `${getter(a)}`.localeCompare(getter(b))\n  const dsc = (a: T, b: T) => `${getter(b)}`.localeCompare(getter(a))\n  return array.slice().sort(dir === 'desc' ? dsc : asc)\n}",
+        "jsdoc": "```typescript\n/**\n * Sorts an array of items based on a specified getter function and direction.\n * @param array The array of items to be sorted.\n * @param getter A function that takes an item and returns a string to be used for sorting.\n * @param dir The direction of the sort. Can be either 'asc' for ascending or 'desc' for descending. Default is 'asc'.\n * @returns A new array that is a sorted copy of the input array.\n */\n```"
+    },
+    {
+        "line": 117,
+        "text": "counting = <T, TId extends string | number | symbol>(\n  list: readonly T[],\n  identity: (item: T) => TId\n): Record<TId, number> => {\n  if (!list) return {} as Record<TId, number>\n  return list.reduce((acc, item) => {\n    const id = identity(item)\n    acc[id] = (acc[id] ?? 0) + 1\n    return acc\n  }, {} as Record<TId, number>)\n}",
+        "jsdoc": "```typescript\n/**\n * Counts the occurrences of each unique item in a list based on a provided identity function.\n * @param list The list of items to count.\n * @param identity A function that returns a unique identifier for each item in the list.\n * @returns An object where the keys are the unique identifiers and the values are the counts of each identifier.\n */\n```"
+    },
+    {
+        "line": 129,
+        "text": "replace = <T>(\n  list: readonly T[],\n  newItem: T,\n  match: (item: T, idx: number) => boolean\n): T[] => {\n  if (!list) return []\n  if (newItem === undefined) return [...list]\n  for (let idx = 0; idx < list.length; idx++) {\n    const item = list[idx]\n    if (match(item, idx)) {\n      return [\n        ...list.slice(0, idx),\n        newItem,\n        ...list.slice(idx + 1, list.length)\n      ]\n    }\n  }\n  return [...list]\n}",
+        "jsdoc": "```typescript\n/**\n * Replaces an item in a given list with a new item based on a matching condition.\n * @param list The list to search and replace in.\n * @param newItem The new item to replace the matching item with.\n * @param match A function that takes an item and its index and returns a boolean indicating whether the item matches the condition.\n * @returns A new list with the matching item replaced by the new item. If no match is found, the original list is returned.\n */\n```"
+    },
+    {
+        "line": 149,
+        "text": "objectify = <T, Key extends string | number | symbol, Value = T>(\n  array: readonly T[],\n  getKey: (item: T) => Key,\n  getValue: (item: T) => Value = item => item as unknown as Value\n): Record<Key, Value> => {\n  return array.reduce((acc, item) => {\n    acc[getKey(item)] = getValue(item)\n    return acc\n  }, {} as Record<Key, Value>)\n}",
+        "jsdoc": "```typescript\n/**\n * Converts an array into an object where the keys are derived from the array items using a provided function.\n *\n * @typeParam T - The type of the items in the input array.\n * @typeParam Key - The type of the keys in the output object. Must be a string, number, or symbol.\n * @typeParam Value - The type of the values in the output object. Defaults to the type of the items in the input array.\n * @param array - The input array to be converted into an object.\n * @param getKey - A function that takes an item from the input array and returns a key for the output object.\n * @param getValue - A function that takes an item from the input array and returns a value for the output object. Defaults to a function that returns the item itself.\n * @returns An object where the keys are derived from the input array items using the provided `getKey` function, and the values are derived from the input array items using the provided `getValue` function.\n */\n```"
+    },
+    {
+        "line": 160,
+        "text": "select = <T, K>(\n  array: readonly T[],\n  mapper: (item: T, index: number) => K,\n  condition: (item: T, index: number) => boolean\n) => {\n  if (!array) return []\n  return array.reduce((acc, item, index) => {\n    if (!condition(item, index)) return acc\n    acc.push(mapper(item, index))\n    return acc\n  }, [] as K[])\n}",
+        "jsdoc": "```typescript\n/**\n * Selects elements from an array based on a condition and maps them to a new value.\n * @param array The array to select elements from.\n * @param mapper A function that maps the selected elements to a new value.\n * @param condition A function that determines whether an element should be selected.\n * @returns An array of the mapped elements that satisfy the condition.\n */\n```"
+    },
+    {
+        "line": 201,
+        "text": "cluster = <T>(list: readonly T[], size: number = 2): T[][] => {\n  const clusterCount = Math.ceil(list.length / size)\n  return new Array(clusterCount).fill(null).map((_c: null, i: number) => {\n    return list.slice(i * size, i * size + size)\n  })\n}",
+        "jsdoc": "```typescript\n/**\n * Clusters a given list into arrays of a specified size.\n * @param list The list to be clustered.\n * @param size The size of each cluster. Default is 2.\n * @returns An array of clusters.\n */\n```"
+    },
+    {
+        "line": 208,
+        "text": "unique = <T, K extends string | number | symbol>(\n  array: readonly T[],\n  toKey?: (item: T) => K\n): T[] => {\n  const valueMap = array.reduce((acc, item) => {\n    const key = toKey ? toKey(item) : (item as any as string | number | symbol)\n    if (acc[key]) return acc\n    acc[key] = item\n    return acc\n  }, {} as Record<string | number | symbol, T>)\n  return Object.values(valueMap)\n}",
+        "jsdoc": "```typescript\n/**\n * Returns a new array with unique elements from the input array based on a specified key.\n * If no key is provided, it uses the elements themselves as keys.\n *\n * @typeparam T - The type of the elements in the input array.\n * @typeparam K - The type of the key used to determine uniqueness. Must be a string, number, or symbol.\n * @param array - The input array.\n * @param toKey - An optional function that takes an element and returns a key used to determine uniqueness.\n * @returns A new array with unique elements based on the specified key.\n */\n```"
+    },
+    {
+        "line": 236,
+        "text": "list = <T = number>(\n  startOrLength: number,\n  end?: number,\n  valueOrMapper?: T | ((i: number) => T),\n  step?: number\n): T[] => {\n  return Array.from(range(startOrLength, end, valueOrMapper, step))\n}",
+        "jsdoc": "```typescript\n/**\n * Generates an array of elements of type T, based on the provided parameters.\n *\n * @param startOrLength - The starting value or the length of the array.\n * @param end - The ending value for the array generation.\n * @param valueOrMapper - The value to fill the array with or a function to map the index to the value.\n * @param step - The step value for the array generation.\n * @returns An array of elements of type T.\n */\n```"
+    },
+    {
+        "line": 245,
+        "text": "flat = <T>(lists: readonly T[][]): T[] => {\n  return lists.reduce((acc, list) => {\n    acc.push(...list)\n    return acc\n  }, [])\n}",
+        "jsdoc": "```typescript\n/**\n * Flattens an array of arrays into a single array.\n * @param lists An array of arrays to be flattened.\n * @returns A single array containing all elements from the input arrays.\n */\n```"
+    },
+    {
+        "line": 252,
+        "text": "intersects = <T, K extends string | number | symbol>(\n  listA: readonly T[],\n  listB: readonly T[],\n  identity?: (t: T) => K\n): boolean => {\n  if (!listA || !listB) return false\n  const ident = identity ?? ((x: T) => x as unknown as K)\n  const dictB = listB.reduce((acc, item) => {\n    acc[ident(item)] = true\n    return acc\n  }, {} as Record<string | number | symbol, boolean>)\n  return listA.some(value => dictB[ident(value)])\n}",
+        "jsdoc": "```typescript\n/**\n * Checks if two lists intersect based on a provided identity function or default identity.\n * @param listA The first list to check for intersection.\n * @param listB The second list to check for intersection.\n * @param identity An optional function to extract a unique identifier from each element in the lists.\n * @returns A boolean indicating whether the lists intersect based on the provided identity function.\n */\n```"
+    },
+    {
+        "line": 266,
+        "text": "fork = <T>(\n  list: readonly T[],\n  condition: (item: T) => boolean\n): [T[], T[]] => {\n  if (!list) return [[], []]\n  return list.reduce(\n    (acc, item) => {\n      const [a, b] = acc\n      if (condition(item)) {\n        return [[...a, item], b]\n      } else {\n        return [a, [...b, item]]\n      }\n    },\n    [[], []] as [T[], T[]]\n  )\n}",
+        "jsdoc": "```typescript\n/**\n * Forks an array into two based on a provided condition.\n *\n * @param list The array to be forked.\n * @param condition The condition to determine which array an item should be placed in.\n * @returns A tuple containing two arrays, the first containing items that satisfy the condition and the second containing items that do not.\n *\n * @example\n * const [even, odd] = fork([1, 2, 3, 4, 5], (n) => n % 2 === 0);\n * // even = [2, 4]\n * // odd = [1, 3, 5]\n */\n```"
+    },
+    {
+        "line": 284,
+        "text": "merge = <T>(\n  root: readonly T[],\n  others: readonly T[],\n  matcher: (item: T) => any\n) => {\n  if (!others && !root) return []\n  if (!others) return root\n  if (!root) return []\n  if (!matcher) return root\n  return root.reduce((acc, r) => {\n    const matched = others.find(o => matcher(r) === matcher(o))\n    if (matched) acc.push(matched)\n    else acc.push(r)\n    return acc\n  }, [] as T[])\n}",
+        "jsdoc": "```typescript\n/**\n * Merges two arrays of objects based on a matching property.\n *\n * @param root - The main array to merge into.\n * @param others - The array to merge from.\n * @param matcher - A function that takes an item and returns a value to match on.\n * @returns A new array containing the merged items.\n *\n * @example\n * const root = [{ id: 1, name: 'John' }, { id: 2, name: 'Jane' }]\n * const others = [{ id: 2, name: 'Jane Doe' }, { id: 3, name: 'Bob' }]\n * const merged = merge(root, others, item => item.id)\n * // merged = [{ id: 1, name: 'John' }, { id: 2, name: 'Jane Doe' }, { id: 3, name: 'Bob' }]\n */\n```"
+    },
+    {
+        "line": 301,
+        "text": "replaceOrAppend = <T>(\n  list: readonly T[],\n  newItem: T,\n  match: (a: T, idx: number) => boolean\n) => {\n  if (!list && !newItem) return []\n  if (!newItem) return [...list]\n  if (!list) return [newItem]\n  for (let idx = 0; idx < list.length; idx++) {\n    const item = list[idx]\n    if (match(item, idx)) {\n      return [\n        ...list.slice(0, idx),\n        newItem,\n        ...list.slice(idx + 1, list.length)\n      ]\n    }\n  }\n  return [...list, newItem]\n}",
+        "jsdoc": "```typescript\n/**\n * Replaces an item in the given list that matches the provided condition with a new item, or appends the new item to the end of the list if no match is found.\n * @param list The list to search for a matching item.\n * @param newItem The new item to replace the matching item with or append to the end of the list.\n * @param match A function that takes an item and its index in the list, and returns a boolean indicating whether the item matches the desired condition.\n * @returns A new list with the matching item replaced or the new item appended.\n */\n```"
+    },
+    {
+        "line": 322,
+        "text": "toggle = <T>(\n  list: readonly T[],\n  item: T,\n  toKey?: null | ((item: T, idx: number) => number | string | symbol),\n  options?: {\n    strategy?: 'prepend' | 'append'\n  }\n) => {\n  if (!list && !item) return []\n  if (!list) return [item]\n  if (!item) return [...list]\n  const matcher = toKey\n    ? (x: T, idx: number) => toKey(x, idx) === toKey(item, idx)\n    : (x: T) => x === item\n  const existing = list.find(matcher)\n  if (existing) return list.filter((x, idx) => !matcher(x, idx))\n  const strategy = options?.strategy ?? 'append'\n  if (strategy === 'append') return [...list, item]\n  return [item, ...list]\n}",
+        "jsdoc": "```typescript\n/**\n * Toggles the presence of an item in a list.\n *\n * @typeParam T - The type of the items in the list.\n * @param list - The list to toggle the item in. If not provided, an empty list is returned.\n * @param item - The item to toggle. If not provided, the original list is returned.\n * @param toKey - An optional function to extract a key from each item in the list. If provided, the key is used to match the item instead of the item itself. If null, the item itself is used as the key.\n * @param options - An optional object containing additional options.\n * @param options.strategy - The strategy to use when adding the item to the list. If 'prepend', the item is added to the beginning of the list. If 'append' (default), the item is added to the end of the list.\n * @returns The list with the item toggled. If the item is already in the list, it is removed. If the item is not in the list, it is added.\n */\n```"
+    },
+    {
+        "line": 345,
+        "text": "sift = <T>(list: readonly (T | Falsy)[]): T[] => {\n  return (list?.filter(x => !!x) as T[]) ?? []\n}",
+        "jsdoc": "```typescript\n/**\n * Filters out falsy values from the input list and returns an array of non-falsy values.\n * @param list - The input list of values, which can be of any type T or a falsy value.\n * @returns An array of non-falsy values of type T. If the input list is null or undefined, an empty array is returned.\n */\n```\nThis docstring describes the purpose of the function, the input parameter, and the return value. It also mentions the behavior of the function when the input list is null or undefined."
+    },
+    {
+        "line": 349,
+        "text": "iterate = <T>(\n  count: number,\n  func: (currentValue: T, iteration: number) => T,\n  initValue: T\n) => {\n  let value = initValue\n  for (let i = 1; i <= count; i++) {\n    value = func(value, i)\n  }\n  return value\n}",
+        "jsdoc": "```typescript\n/**\n * Iterates over a range of numbers and applies a function to an initial value, returning the final result.\n * @param count The number of iterations to perform.\n * @param func A function to apply to the current value and iteration number, returning a new value.\n * @param initValue The initial value to pass to the function.\n * @returns The final result after all iterations have been performed.\n */\n```"
+    },
+    {
+        "line": 361,
+        "text": "diff = <T>(\n  root: readonly T[],\n  other: readonly T[],\n  identity: (item: T) => string | number | symbol = (t: T) =>\n    t as unknown as string | number | symbol\n): T[] => {\n  if (!root?.length && !other?.length) return []\n  if (root?.length === undefined) return [...other]\n  if (!other?.length) return [...root]\n  const bKeys = other.reduce((acc, item) => {\n    acc[identity(item)] = true\n    return acc\n  }, {} as Record<string | number | symbol, boolean>)\n  return root.filter(a => !bKeys[identity(a)])\n}",
+        "jsdoc": "```typescript\n/**\n * This function compares two arrays `root` and `other` and returns a new array that includes all elements from `root` that are not present in `other`.\n * The comparison is based on the identity of the elements, which is determined by the `identity` function.\n * If no `identity` function is provided, the elements are compared as strings, numbers, or symbols.\n * If both `root` and `other` are empty, an empty array is returned.\n * If `root` is empty, `other` is returned as is.\n * If `other` is empty, `root` is returned as is.\n * @param root - The first array to compare.\n * @param other - The second array to compare.\n * @param identity - A function that returns the identity of an element. Defaults to a function that returns the element as a string, number, or symbol.\n * @returns A new array that includes all elements from `root` that are not present in `other`.\n */\n```"
+    }
+]
