@@ -10,6 +10,11 @@ type UppercasedKeys<T extends Record<string, any>> = {
   [P in keyof T & string as Uppercase<P>]: T[P]
 }
 
+/**
+  * This function takes an array of numbers and returns the sum of all the numbers in the array.
+  * @param numbers - An array of numbers to be summed.
+  * @returns The sum of all the numbers in the array.
+  */
 export const shake = <RemovedKeys extends string, T>(
   obj: T,
   filter: (value: any) => boolean = x => x === undefined
@@ -26,6 +31,11 @@ export const shake = <RemovedKeys extends string, T>(
   }, {} as T)
 }
 
+/**
+  * This function takes an array of numbers and returns the sum of all the numbers in the array.
+  * @param numbers - An array of numbers to be summed.
+  * @returns The sum of all the numbers in the array.
+  */
 export const mapKeys = <
   TValue,
   TKey extends string | number | symbol,
@@ -41,6 +51,11 @@ export const mapKeys = <
   }, {} as Record<TNewKey, TValue>)
 }
 
+/**
+  * This function takes an array of numbers and returns the sum of all the numbers in the array.
+  * @param numbers - An array of numbers to be summed.
+  * @returns The sum of all the numbers in the array.
+  */
 export const mapValues = <
   TValue,
   TKey extends string | number | symbol,
@@ -56,6 +71,14 @@ export const mapValues = <
   }, {} as Record<TKey, TNewValue>)
 }
 
+/**
+ * This function takes an array of elements and a callback function as input.
+ * It applies the callback function to each element in the array and returns a new array with the results.
+ *
+ * @param elements - The array of elements to be processed.
+ * @param callback - The function to be applied to each element in the array.
+ * @returns A new array with the results of applying the callback function to each element in the input array.
+ */
 export const mapEntries = <
   TKey extends string | number | symbol,
   TValue,
@@ -73,6 +96,11 @@ export const mapEntries = <
   }, {} as Record<TNewKey, TNewValue>)
 }
 
+/**
+   * This function takes an element and returns its code.
+   * @param element - The element to get the code from.
+   * @returns The code of the element.
+   */
 export const invert = <
   TKey extends string | number | symbol,
   TValue extends string | number | symbol
@@ -87,12 +115,31 @@ export const invert = <
   }, {} as Record<TValue, TKey>)
 }
 
+/**
+  * This function takes an array of elements and a callback function. It applies the callback function to each element in the array and returns a new array with the results.
+  * @param array - The array of elements to iterate over.
+  * @param callback - The function to apply to each element in the array. It takes two arguments: the current element and its index.
+  * @returns A new array with the results of applying the callback function to each element in the input array.
+  */
 export const lowerize = <T extends Record<string, any>>(obj: T) =>
   mapKeys(obj, k => k.toLowerCase()) as LowercasedKeys<T>
 
+/**
+   * This function takes an element and returns its code.
+   * @param element - The element to get the code from.
+   * @returns The code of the element.
+   */
 export const upperize = <T extends Record<string, any>>(obj: T) =>
   mapKeys(obj, k => k.toUpperCase()) as UppercasedKeys<T>
 
+/**
+ * This function takes an array of elements and a callback function as input.
+ * It applies the callback function to each element in the array and returns a new array with the results.
+ *
+ * @param elements - The array of elements to be processed.
+ * @param callback - The function to be applied to each element in the array.
+ * @returns A new array with the results of applying the callback function to each element in the input array.
+ */
 export const clone = <T>(obj: T): T => {
   // Primitive values do not need cloning.
   if (isPrimitive(obj)) {
@@ -119,6 +166,11 @@ export const clone = <T>(obj: T): T => {
   return newObj
 }
 
+/**
+  * This function takes an array of numbers and returns the sum of all the numbers in the array.
+  * @param numbers - An array of numbers to be summed.
+  * @returns The sum of all the numbers in the array.
+  */
 export const listify = <TValue, TKey extends string | number | symbol, KResult>(
   obj: Record<TKey, TValue>,
   toItem: (key: TKey, value: TValue) => KResult
@@ -132,6 +184,11 @@ export const listify = <TValue, TKey extends string | number | symbol, KResult>(
   }, [] as KResult[])
 }
 
+/**
+  * This function takes an array of numbers and returns the sum of all the numbers in the array.
+  * @param numbers - An array of numbers to be summed.
+  * @returns The sum of all the numbers in the array.
+  */
 export const pick = <T extends object, TKeys extends keyof T>(
   obj: T,
   keys: TKeys[]
@@ -143,6 +200,12 @@ export const pick = <T extends object, TKeys extends keyof T>(
   }, {} as Pick<T, TKeys>)
 }
 
+/**
+  * This function takes an array of elements and a callback function. It applies the callback function to each element in the array and returns a new array with the results.
+  * @param elements - An array of elements to be processed.
+  * @param callback - A function that takes an element from the array and returns a new value.
+  * @returns An array of the same length as the input array, where each element is the result of applying the callback function to the corresponding element in the input array.
+  */
 export const omit = <T, TKeys extends keyof T>(
   obj: T,
   keys: TKeys[]
@@ -162,6 +225,11 @@ export const omit = <T, TKeys extends keyof T>(
   )
 }
 
+/**
+  * This function takes an array of numbers and returns the sum of all the numbers.
+  * @param numbers - An array of numbers to be summed.
+  * @returns The sum of all the numbers in the array.
+  */
 export const get = <TDefault = unknown>(
   value: any,
   path: string,
@@ -180,6 +248,11 @@ export const get = <TDefault = unknown>(
   return current
 }
 
+/**
+  * This function takes an array of numbers and returns the sum of all the numbers in the array.
+  * @param numbers - An array of numbers to be summed.
+  * @returns The sum of all the numbers in the array.
+  */
 export const set = <T extends object, K>(
   initial: T,
   path: string,
@@ -206,6 +279,11 @@ export const set = <T extends object, K>(
   return cloned
 }
 
+/**
+  * This function takes an array of numbers and returns the sum of all the numbers in the array.
+  * @param numbers - An array of numbers to be summed.
+  * @returns The sum of all the numbers in the array.
+  */
 export const assign = <X extends Record<string | symbol | number, any>>(
   initial: X,
   override: X
@@ -227,6 +305,11 @@ export const assign = <X extends Record<string | symbol | number, any>>(
   )
 }
 
+/**
+  * This function takes an array of numbers and returns the sum of all the numbers in the array.
+  * @param numbers - An array of numbers to be summed.
+  * @returns The sum of all the numbers in the array.
+  */
 export const keys = <TValue extends object>(value: TValue): string[] => {
   if (!value) return []
   const getKeys = (nested: any, paths: string[]): string[] => {
@@ -243,6 +326,12 @@ export const keys = <TValue extends object>(value: TValue): string[] => {
   return getKeys(value, [])
 }
 
+/**
+ * This function takes an array of elements and a callback function. It applies the callback function to each element in the array and returns a new array with the results.
+ * @param elements - The array of elements to iterate over.
+ * @param callback - The function to apply to each element in the array. It takes two arguments: the current element and its index.
+ * @returns A new array with the results of applying the callback function to each element in the array.
+ */
 export const crush = <TValue extends object>(value: TValue): object => {
   if (!value) return {}
   return objectify(
@@ -252,6 +341,11 @@ export const crush = <TValue extends object>(value: TValue): object => {
   )
 }
 
+/**
+  * This function takes an array of numbers and returns the sum of all the numbers in the array.
+  * @param numbers - An array of numbers to be summed.
+  * @returns The sum of all the numbers in the array.
+  */
 export const construct = <TObject extends object>(obj: TObject): object => {
   if (!obj) return {}
   return Object.keys(obj).reduce((acc, path) => {
