@@ -2,6 +2,6 @@
     "$schema": "https://typedoc.org/schema.json",
     "tsconfig": "tsconfig.json",
     "entryPoints": ["src/index.ts"],
-    "excludeNotDocumented": false,
+    "excludeNotDocumented": true,
     "out": "./docs/typedoc"
 }
