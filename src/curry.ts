@@ -380,16 +380,6 @@ export function compose(...funcs: ((...args: any[]) => any)[]) {
   return funcs.reverse().reduce((acc, fn) => fn(acc))
 }
 
-/**
- * This type produces the type array of TItems with all the type items
- * in TItemsToRemove removed from the start of the array type.
- *
- * @example
- * ```
- * RemoveItemsInFront<[number, number], [number]> = [number]
- * RemoveItemsInFront<[File, number, string], [File, number]> = [string]
- * ```
- */
 type RemoveItemsInFront<
   TItems extends any[],
   TItemsToRemove extends any[]
@@ -402,10 +392,6 @@ export const partial = <T extends any[], TA extends Partial<T>, R>(
   return (...rest: RemoveItemsInFront<T, TA>) =>
     fn(...([...args, ...rest] as T))
 }
-/**
- * Like partial but for unary functions that accept
- * a single object argument
- */
 export const partob = <T, K, PartialArgs extends Partial<T>>(
   fn: (args: T) => K,
   argobj: PartialArgs
@@ -417,11 +403,6 @@ export const partob = <T, K, PartialArgs extends Partial<T>>(
     } as T)
 }
 
-/**
- * Creates a Proxy object that will dynamically
- * call the handler argument when attributes are
- * accessed
- */
 export const proxied = <T, K>(
   handler: (propertyName: T) => K
 ): Record<string, K> => {
@@ -459,13 +440,6 @@ const memoize = <TArgs extends any[], TResult>(
   }
 }
 
-/**
- * Creates a memoized function. The returned function
- * will only execute the source function when no value
- * has previously been computed. If a ttl (milliseconds)
- * is given previously computed values will be checked
- * for expiration before being returned.
- */
 export const memo = <TArgs extends any[], TResult>(
   func: (...args: TArgs) => TResult,
   options: {
@@ -480,37 +454,16 @@ export const memo = <TArgs extends any[], TResult>(
 
 export type DebounceFunction<TArgs extends any[]> = {
   (...args: TArgs): void
-  /**
-   * Cancels the debounced function
-   */
   cancel(): void
-  /**
-   * Checks if there is any invocation debounced
-   */
   isPending(): boolean
-  /**
-   * Runs the debounced function immediately
-   */
   flush(...args: TArgs): void
 }
 
 export type ThrottledFunction<TArgs extends any[]> = {
   (...args: TArgs): void
-  /**
-   * Checks if there is any invocation throttled
-   */
   isThrottled(): boolean
 }
 
-/**
- * Given a delay and a function returns a new function
- * that will only call the source function after delay
- * milliseconds have passed without any invocations.
- *
- * The debounce function comes with a `cancel` method
- * to cancel delayed `func` invocations and a `flush`
- * method to invoke them immediately
- */
 export const debounce = <TArgs extends any[]>(
   { delay }: { delay: number },
   func: (...args: TArgs) => any
@@ -540,11 +493,6 @@ export const debounce = <TArgs extends any[]>(
   return debounced
 }
 
-/**
- * Given an interval and a function returns a new function
- * that will only call the source function if interval milliseconds
- * have passed since the last invocation
- */
 export const throttle = <TArgs extends any[]>(
   { interval }: { interval: number },
   func: (...args: TArgs) => any
@@ -567,23 +515,6 @@ export const throttle = <TArgs extends any[]>(
   return throttled
 }
 
-/**
- * Make an object callable. Given an object and a function
- * the returned object will be a function with all the
- * objects properties.
- *
- * @example
- * ```typescript
- * const car = callable({
- *   wheels: 2
- * }, self => () => {
- *   return 'driving'
- * })
- *
- * car.wheels // => 2
- * car() // => 'driving'
- * ```
- */
 export const callable = <
   TValue,
   TObj extends Record<string | number | symbol, TValue>,

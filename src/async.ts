@@ -1,11 +1,6 @@
 import { fork, list, range, sort } from './array'
 import { isArray, isPromise } from './typed'
 
-/**
- * An async reduce function. Works like the
- * built-in Array.reduce function but handles
- * an async reducer function
- */
 export const reduce = async <T, K>(
   array: readonly T[],
   asyncReducer: (acc: K, item: T, index: number) => Promise<K>,
@@ -23,11 +18,6 @@ export const reduce = async <T, K>(
   return value
 }
 
-/**
- * An async map function. Works like the
- * built-in Array.map function but handles
- * an async mapper function
- */
 export const map = async <T, K>(
   array: readonly T[],
   asyncMapFunc: (item: T, index: number) => Promise<K>
@@ -42,14 +32,6 @@ export const map = async <T, K>(
   return result
 }
 
-/**
- * Useful when for script like things where cleanup
- * should be done on fail or sucess no matter.
- *
- * You can call defer many times to register many
- * defered functions that will all be called when
- * the function exits in any state.
- */
 export const defer = async <TResponse>(
   func: (
     register: (
@@ -85,12 +67,6 @@ type WorkItemResult<K> = {
   error: any
 }
 
-/**
- * Support for the built-in AggregateError
- * is still new. Node < 15 doesn't have it
- * so patching here.
- * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError#browser_compatibility
- */
 export class AggregateError extends Error {
   errors: Error[]
   constructor(errors: Error[] = []) {
@@ -103,12 +79,6 @@ export class AggregateError extends Error {
   }
 }
 
-/**
- * Executes many async functions in parallel. Returns the
- * results from all functions as an array. After all functions
- * have resolved, if any errors were thrown, they are rethrown
- * in an instance of AggregateError
- */
 export const parallel = async <T, K>(
   limit: number,
   array: readonly T[],
@@ -150,36 +120,13 @@ type PromiseValues<T extends Promise<any>[]> = {
   [K in keyof T]: T[K] extends Promise<infer U> ? U : never
 }
 
-/**
- * Functionally similar to Promise.all or Promise.allSettled. If any
- * errors are thrown, all errors are gathered and thrown in an
- * AggregateError.
- *
- * @example
- * const [user] = await all([
- *   api.users.create(...),
- *   s3.buckets.create(...),
- *   slack.customerSuccessChannel.sendMessage(...)
- * ])
- */
 export async function all<T extends [Promise<any>, ...Promise<any>[]]>(
   promises: T
 ): Promise<PromiseValues<T>>
 export async function all<T extends Promise<any>[]>(
   promises: T
 ): Promise<PromiseValues<T>>
-/**
- * Functionally similar to Promise.all or Promise.allSettled. If any
- * errors are thrown, all errors are gathered and thrown in an
- * AggregateError.
- *
- * @example
- * const { user } = await all({
- *   user: api.users.create(...),
- *   bucket: s3.buckets.create(...),
- *   message: slack.customerSuccessChannel.sendMessage(...)
- * })
- */
+
 export async function all<T extends Record<string, Promise<any>>>(
   promises: T
 ): Promise<{ [K in keyof T]: Awaited<T[K]> }>
@@ -218,10 +165,6 @@ export async function all<
   )
 }
 
-/**
- * Retries the given function the specified number
- * of times.
- */
 export const retry = async <TResponse>(
   options: {
     times?: number
@@ -250,18 +193,10 @@ export const retry = async <TResponse>(
   return undefined as unknown as TResponse
 }
 
-/**
- * Async wait
- */
 export const sleep = (milliseconds: number) => {
   return new Promise(res => setTimeout(res, milliseconds))
 }
 
-/**
- * A helper to try an async function without forking
- * the control flow. Returns an error first callback _like_
- * array response as [Error, result]
- */
 export const tryit = <Args extends any[], Return>(
   func: (...args: Args) => Return
 ) => {
@@ -290,12 +225,6 @@ export const tryit = <Args extends any[], Return>(
   }
 }
 
-/**
- * A helper to try an async function that returns undefined
- * if it fails.
- *
- * e.g. const result = await guard(fetchUsers)() ?? [];
- */
 export const guard = <TFunction extends () => any>(
   func: TFunction,
   shouldGuard?: (err: any) => boolean

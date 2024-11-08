@@ -10,11 +10,6 @@ type UppercasedKeys<T extends Record<string, any>> = {
   [P in keyof T & string as Uppercase<P>]: T[P]
 }
 
-/**
- * Removes (shakes out) undefined entries from an
- * object. Optional second argument shakes out values
- * by custom evaluation.
- */
 export const shake = <RemovedKeys extends string, T>(
   obj: T,
   filter: (value: any) => boolean = x => x === undefined
@@ -31,10 +26,6 @@ export const shake = <RemovedKeys extends string, T>(
   }, {} as T)
 }
 
-/**
- * Map over all the keys of an object to return
- * a new object
- */
 export const mapKeys = <
   TValue,
   TKey extends string | number | symbol,
@@ -50,9 +41,6 @@ export const mapKeys = <
   }, {} as Record<TNewKey, TValue>)
 }
 
-/**
- * Map over all the keys to create a new object
- */
 export const mapValues = <
   TValue,
   TKey extends string | number | symbol,
@@ -68,9 +56,6 @@ export const mapValues = <
   }, {} as Record<TKey, TNewValue>)
 }
 
-/**
- * Map over all the keys to create a new object
- */
 export const mapEntries = <
   TKey extends string | number | symbol,
   TValue,
@@ -88,10 +73,6 @@ export const mapEntries = <
   }, {} as Record<TNewKey, TNewValue>)
 }
 
-/**
- * Returns an object with { [keys]: value }
- * inverted as { [value]: key }
- */
 export const invert = <
   TKey extends string | number | symbol,
   TValue extends string | number | symbol
@@ -106,23 +87,12 @@ export const invert = <
   }, {} as Record<TValue, TKey>)
 }
 
-/**
- * Convert all keys in an object to lower case
- */
 export const lowerize = <T extends Record<string, any>>(obj: T) =>
   mapKeys(obj, k => k.toLowerCase()) as LowercasedKeys<T>
 
-/**
- * Convert all keys in an object to upper case
- */
 export const upperize = <T extends Record<string, any>>(obj: T) =>
   mapKeys(obj, k => k.toUpperCase()) as UppercasedKeys<T>
 
-/**
- * Creates a shallow copy of the given obejct/value.
- * @param {*} obj value to clone
- * @returns {*} shallow clone of the given value
- */
 export const clone = <T>(obj: T): T => {
   // Primitive values do not need cloning.
   if (isPrimitive(obj)) {
@@ -149,10 +119,6 @@ export const clone = <T>(obj: T): T => {
   return newObj
 }
 
-/**
- * Convert an object to a list, mapping each entry
- * into a list item
- */
 export const listify = <TValue, TKey extends string | number | symbol, KResult>(
   obj: Record<TKey, TValue>,
   toItem: (key: TKey, value: TValue) => KResult
@@ -166,10 +132,6 @@ export const listify = <TValue, TKey extends string | number | symbol, KResult>(
   }, [] as KResult[])
 }
 
-/**
- * Pick a list of properties from an object
- * into a new object
- */
 export const pick = <T extends object, TKeys extends keyof T>(
   obj: T,
   keys: TKeys[]
@@ -181,11 +143,6 @@ export const pick = <T extends object, TKeys extends keyof T>(
   }, {} as Pick<T, TKeys>)
 }
 
-/**
- * Omit a list of properties from an object
- * returning a new object with the properties
- * that remain
- */
 export const omit = <T, TKeys extends keyof T>(
   obj: T,
   keys: TKeys[]
@@ -205,12 +162,6 @@ export const omit = <T, TKeys extends keyof T>(
   )
 }
 
-/**
- * Dynamically get a nested value from an array or
- * object with a string.
- *
- * @example get(person, 'friends[0].name')
- */
 export const get = <TDefault = unknown>(
   value: any,
   path: string,
@@ -229,15 +180,6 @@ export const get = <TDefault = unknown>(
   return current
 }
 
-/**
- * Opposite of get, dynamically set a nested value into
- * an object using a key path. Does not modify the given
- * initial object.
- *
- * @example
- * set({}, 'name', 'ra') // => { name: 'ra' }
- * set({}, 'cards[0].value', 2) // => { cards: [{ value: 2 }] }
- */
 export const set = <T extends object, K>(
   initial: T,
   path: string,
@@ -264,11 +206,6 @@ export const set = <T extends object, K>(
   return cloned
 }
 
-/**
- * Merges two objects together recursivly into a new
- * object applying values from right to left.
- * Recursion only applies to child object properties.
- */
 export const assign = <X extends Record<string | symbol | number, any>>(
   initial: X,
   override: X
@@ -290,14 +227,6 @@ export const assign = <X extends Record<string | symbol | number, any>>(
   )
 }
 
-/**
- * Get a string list of all key names that exist in
- * an object (deep).
- *
- * @example
- * keys({ name: 'ra' }) // ['name']
- * keys({ name: 'ra', children: [{ name: 'hathor' }] }) // ['name', 'children.0.name']
- */
 export const keys = <TValue extends object>(value: TValue): string[] => {
   if (!value) return []
   const getKeys = (nested: any, paths: string[]): string[] => {
@@ -314,14 +243,6 @@ export const keys = <TValue extends object>(value: TValue): string[] => {
   return getKeys(value, [])
 }
 
-/**
- * Flattens a deep object to a single demension, converting
- * the keys to dot notation.
- *
- * @example
- * crush({ name: 'ra', children: [{ name: 'hathor' }] })
- * // { name: 'ra', 'children.0.name': 'hathor' }
- */
 export const crush = <TValue extends object>(value: TValue): object => {
   if (!value) return {}
   return objectify(
@@ -331,15 +252,6 @@ export const crush = <TValue extends object>(value: TValue): object => {
   )
 }
 
-/**
- * The opposite of crush, given an object that was
- * crushed into key paths and values will return
- * the original object reconstructed.
- *
- * @example
- * construct({ name: 'ra', 'children.0.name': 'hathor' })
- * // { name: 'ra', children: [{ name: 'hathor' }] }
- */
 export const construct = <TObject extends object>(obj: TObject): object => {
   if (!obj) return {}
   return Object.keys(obj).reduce((acc, path) => {
